@@ -101,21 +101,41 @@ The last and fourth issue was that hydra dropped connections against ftp with an
 <img width="1230" height="677" alt="Screenshot 2026-10-17 184651" src="https://github.com/user-attachments/assets/3cb197a1-089e-4159-bdd1-c9f9aaf6c0f7" />
 **Image Description: Metasploit auxiliary/scanner/smb/smb_login cracking windows 7 smb credentials showing success for "napier:napier123".**
 
-
 ---
 
 ## Lab 3: AWS Architecture
 
-- [Apporto Lab 3]()
-
 ### Overview
-hhhhhhhhhh
+Deployed and configured both linux ubuntu and windows server 2022 instances within the aws academy learner lab, used us-east-1 region. I also configured security groups and host based firewall (windows defender and aws inbound rules) for services like SSH, RDP, HTTP, ICMP. Deployed Apache and IIS web servers, analyzed access logs, modified instance hardware specifications using the aws cli terminal and implemented cloud automation using python and boto3 scripts.
 
 ### Key elements of learning
-
+* Deployed ubuntu server and windows server 2022 ec2 instances, connecting network interfaces with security groups to filter specific services like SSH, RDP, HTTP, and HTTPS.
+* Created a second linux administrative user **napier** and updated **/etc/ssh/sshd_config** to enable password SSH authentication as well as the default public key authentication.
+* Conducted forensic log auditing by extracting HTTP status codes and user agent headers from Apache **/var/log/apache2/access.log** and windows iis w3c logs in **C:\inetpub\logs\LogFiles\W3SVC1**   verifying the client IP.
+* Used the aws cli to execute state changes and resize instance types, such as from t2.micro to t3.small.
+* Created python automation scripts with boto3 to enumerate instance states, generate key pairs, create new ec2 instances, and terminate instances.
 
 ### Key difficulties
+The only issue ive encountered in this lab was an **AuthFailure** error when attempting to run aws cli commands and execute the python scripts from the learner lab terminal.   The lab page under the The aws cli details section instructed to copy and paste the session credentials block directly into **~/.aws/credentials**. But, when I navigated to that directory and attempting to save the file, the terminal gave me a permission denied error. 
 
+To investigate why the file could not be modified, I ran **ls -lsa** to inspect the file and directory permissions and discovered that the file **credentials** was missing write permissions for the user account. I resolved this by manually adding write permissions using the command **chmod ugo+w credentials**. Once the permissions were updated, I pasted the active aws credential details into the file, saved it successfully, and re-ran **aws ec2 describe-instances --region us-east-1**. The command executed cleanly and returned the json payload without any authentication or token errors.   
+
+### Validation Screenshots
+
+<img width="754" height="420" alt="Screenshot 2026-10-19 152421" src="https://github.com/user-attachments/assets/9c16921b-73dd-4ce1-8cfd-afabad65202d" />
+**Image Description: From my operaGX brower, navigating to the ubuntu server's public IP (13.221.216.213) over hhtp port 80, verifying Apache2 deployment and custom index.html hosting.**
+
+<img width="1977" height="1149" alt="Screenshot 2026-10-19 152800" src="https://github.com/user-attachments/assets/e79b11a5-3311-40a1-8bc9-7ae756be375c" />
+**Image Description: CMD terminal session showing successful SSH password authentication as the second user "napier@13.221.216.213" after enabling sshd_config password authentication.**
+
+<img width="2537" height="1419" alt="Screenshot 2026-10-19 154328" src="https://github.com/user-attachments/assets/55e0caee-d1ca-4dd3-b0d4-6cb9e10d762a" />
+**Image Description: ICMP verification showing inbound rule "File and Printer Sharing (Echo Request - ICMPv4-In)" enabled in the windows defender firewall as well as successful ping replies from host terminal to 100.52.244.126.**
+
+<img width="2476" height="1534" alt="Screenshot 2026-10-19 154924" src="https://github.com/user-attachments/assets/90803f0c-2dff-4005-a24e-bcb922a7260f" />
+**Image Description: Might be bit confusing but this image verifies windows server iis hosting: top browser loading "Main Web site", RDP open with notepad showing w3c access log "u_ex261019.log" with http 200 responses on port 80, and browser client IP (2.122.81.173) which matches my host machine's public IP (WhatsMyIP website).**
+
+<img width="2257" height="577" alt="Screenshot 2026-10-19 155455" src="https://github.com/user-attachments/assets/5a34a089-1347-4a36-9a6d-ae8037d080e7" />
+**Image Description: Boto3 automation execution showing create.py deploying ec2 instance "i-04d92d19fce6b938d", then is terminated in the aws cli and the ec2 management console page confirmaing the instance was terminated.**
 
 ---
 
