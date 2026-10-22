@@ -115,7 +115,7 @@ The last and fourth issue was that hydra dropped connections against ftp with an
 
 ---
 
-## Lab 3: AWS Architecture
+## Lab 3: AWS Architecture (Completed)
 
 ### Overview
 Deployed and configured both linux ubuntu and windows server 2022 instances within the aws academy learner lab, used us-east-1 region. I also configured security groups and host based firewall (windows defender and aws inbound rules) for services like SSH, RDP, HTTP, ICMP. Deployed Apache and IIS web servers, analyzed access logs, modified instance hardware specifications using the aws cli terminal and implemented cloud automation using python and boto3 scripts.
@@ -156,45 +156,77 @@ To investigate why the file could not be modified, I ran **ls -lsa** to inspect 
 
 ---
 
-## Lab 4: Symmetric Key and Hashing
+## Lab 4: Symmetric Key and Hashing (Currently editing gihub)
 
 - [Apporto Lab 4]()
 
 ### Overview
-hhhhhhhhhhhh
+xxxxxxxxxxxxxxxx
 
 ### Key elements of learning
+* x
+* x
+* x
+* x
+* x
 
 ### Key difficulties
-
+xxxxxxxxxxxxxxxx
 
 ---
 
-## Lab 5: Secret Key and Hashing
-
-- [Apporto Lab 5]() 
+## Lab 5: Public Key and Key Exchange (Completed)
 
 ### Overview
-hhhhhhhh
+Practiced using public key cryptography, diffie-hellman, and encryption in vscode and the aws. I used vscode to run the python scripts for diffie-hellman math calculations and the hazmat AES encryption. Everything else was done in aws, where I created and inspected RSA keys and an X.509 certificate using openssl, set up 2048 bit RSA keys in aws kms to encrypt, decrypt, and sign files, and automated the kms encryption process using python and boto3.
 
 ### Key elements of learning
 
+* Used python to do the diffie-hellman math and confirmed that both bob and alice ended up with the same shared key number.
+* Created 1024 bit rsa private and public keys using openssl, locked down the private key with a 3-DES password, and tested encrypting and decrypting a basic text file.
+* Made a CSR and generated a self signed X.509 digital certificate called server.crt to see how public keys and sha256 signatures are stored and checked.
+* Made asymmetric 2048 bit rsa keys in aws kms for both encrypting and decrypting files and for digital signing.
+* Used a python script which used boto3 to automate encrypting a string with kms and getting the plaintext back.
+* Signed a file inside aws kms, exported the public key, and checked that openssl could verify the signature locally and output "verified OK".
+* Used a python cryptography library to run aes encryption in ecb mode, turning a password into a sha256 key and adding pkcs7 padding to the message.
 
 ### Key difficulties
 
+Didnt have as many issues compared to the other labs except for a **ExpiredTokenException** error when attempting to run the asymmetric kms encryption command from the aws lab terminal.
+Hald way through the lab i took a break and the temporary aws session token had timed out. 
+When I attempted to execute **aws kms encrypt --key-id alias/PublicKeyForDemo**, the terminal game me a **"An error occurred (ExpiredTokenException) when calling the Encrypt operation: The security token included in the request is expired"**
+I resolved this by opening aws lab terminal, looked at the aws details, and copied the refreshed cli credentials and replaced the expired configuration with the new token, and saved the file. 
+To confirm the credentials were correct, I ran **aws sts get-caller-identity --region us-east-1**, which displayed my active role details. 
+Once confirmed, I ran the kms encrypt command again and the ciphertext generated successfully.
+
+### Validation Screenshots
+
+<img width="1900" height="1237" alt="Screenshot 2026-10-22 210900" src="https://github.com/user-attachments/assets/37f8a979-8e5e-4b6b-a47d-a42bebe64f89" />
+
+**Image Description: Python script in vscode calculating diffie-hellman key exchange, proving Bob and Alice generate the matching shared key _4868_**
+
+<img width="2131" height="1139" alt="Screenshot 2026-10-22 211828" src="https://github.com/user-attachments/assets/96761aca-dd4d-457e-b5a5-540e8f762237" />
+
+**Image Description: Running hazmat.py in vscode to test aes-ecb encryption with pkcs7 padding on _"inkwell"_ using key _"orange"_.**
+
+<img width="966" height="456" alt="Screenshot 2026-10-22 212743" src="https://github.com/user-attachments/assets/0ab83473-2959-4d48-92a8-6a26ed4783ea" />
+
+**Image Description: Terminal showing decrypted plaintext _"This is a secret message"_ and inspecting server.crt to verify the 1024 bit rsa key and sha256 signature.**
+
+<img width="2453" height="213" alt="Screenshot 2026-10-22 211534" src="https://github.com/user-attachments/assets/a4573723-e864-40eb-baf9-ead3b08d8a46" />
+
+**Image Description: Decrypting the ciphertext file in aws cli using key _alias/PublicKeyForDemo_ and base64 decoding back to "This is my secret file."**
+
+<img width="2464" height="343" alt="Screenshot 2026-10-22 211602" src="https://github.com/user-attachments/assets/923f8596-18fa-4fe0-8b6e-49578cac464f" />
+
+**Image Description: Running kms_rsa.py in the aws terminal to automate encrypting and decrypting the string "Hello" using aws kms.**
+
+<img width="1898" height="432" alt="Screenshot 2026-10-22 211649" src="https://github.com/user-attachments/assets/e0974c21-82cc-442a-a47f-dd399d14528c" />
+
+**Image Description: checking the digital signature in aws kms which shows _"SignatureValid: true"_ and verifying it locally with openssl which returned _"Verified OK"_**
 
 ---
 
-## Lab 6: Public Key and Key Exchange 
 
-- [Apporto Lab 6]() 
-
-### Overview
-hhhhhhh
-
-### Key elements of learning
-
-
-### Key difficulties
 
 
